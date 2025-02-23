@@ -1,3 +1,25 @@
+<?php
+require_once '../config/db_connect.php';
+
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $fullname = $_POST['name'];
+    $nic = $_POST['nic'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];  // Store password as plain text
+
+    $sql = "INSERT INTO users (fullname, nic, email, password) VALUES (?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ssss", $fullname, $nic, $email, $password);
+
+    if ($stmt->execute()) {
+        header("Location: login.php");
+        exit();
+    } else {
+        $error = "Registration failed. Please try again.";
+    }
+    $stmt->close();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -12,9 +34,6 @@
 </head>
 
 <body>
-
-
-
     <section class="auth-section">
         <div class="auth-container">
             <h2 style="display: flex; justify-content: space-between; align-items: center;">
@@ -22,15 +41,19 @@
                     <i class="fas fa-arrow-left" style="color: black;"></i>
                 </a>
                 <span>Create Account</span>
-                <span style="width: 24px;"></span> <!-- Empty span for balance -->
+                <span style="width: 24px;"></span>
             </h2>
-            <form class="auth-form">
+            <?php if (isset($error)) { ?>
+                <div style="color: red; margin-bottom: 10px;"><?php echo $error; ?></div>
+            <?php } ?>
+            <form class="auth-form" method="POST" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
                 <div class="form-group">
                     <label for="name">Full Name</label>
                     <input type="text" id="name" name="name" required placeholder="Enter your full name">
                 </div>
-                <div class="form-group">NIC</label>
-                    <input type="text" id="name" name="name" required placeholder="Enter your NIC No">
+                <div class="form-group">
+                    <label for="nic">NIC</label>
+                    <input type="text" id="nic" name="nic" required placeholder="Enter your NIC No">
                 </div>
                 <div class="form-group">
                     <label for="email">Email Address</label>
