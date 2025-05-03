@@ -41,10 +41,11 @@ include 'includes/header.php';
                         alt="<?php echo $hotel['name']; ?>"
                     >
                     <div class="card-body">
-                        <h5 class="card-title"><?php echo $hotel['name']; ?></h5>
+                     
+                        <h5 class="card-title"><strong><?php echo $hotel['name']; ?></strong></h5>
                         <div class="hotel-rating">
                             <?php for($i = 0; $i < $hotel['star_rating']; $i++): ?>
-                                <i class="fas fa-star text-warning"></i>
+                                <i class="fas fa-star text-warning" style="font-size: 0.8em;"></i>
                             <?php endfor; ?>
                         </div>
                         <p class="card-text">

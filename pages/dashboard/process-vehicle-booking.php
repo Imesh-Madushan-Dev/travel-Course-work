@@ -74,7 +74,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         if ($stmt->affected_rows > 0) {
             $conn->commit();
-            header("Location: booking-history.php?success=1");
+            // Replace the header redirect with a JavaScript alert
+            echo "<script>
+                alert('Vehicle booking successful!');
+                window.location.href = 'booking-history.php?success=1';
+            </script>";
             exit();
         } else {
             throw new Exception("Booking insertion failed");

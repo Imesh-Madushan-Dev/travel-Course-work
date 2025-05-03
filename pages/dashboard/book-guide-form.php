@@ -113,7 +113,77 @@ function handleImageError(img) {
         const total = dailyRate * days;
         document.getElementById('totalCost').textContent = total.toFixed(2);
     }
+
+    // Check for success parameter in URL
+    function getUrlParameter(name) {
+        name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+        var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+        var results = regex.exec(location.search);
+        return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+    }
+
+    // Show success popup if booking was successful
+    if (getUrlParameter('booking') === 'success') {
+        document.getElementById('successPopup').style.display = 'flex';
+    }
+
+    // Close popup when clicking the close button
+    document.querySelector('.close-btn').addEventListener('click', function() {
+        document.getElementById('successPopup').style.display = 'none';
+    });
     </script>
    
+    <style>
+    .success-popup {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+    }
+    
+    .popup-content {
+        background-color: white;
+        padding: 30px;
+        border-radius: 10px;
+        text-align: center;
+        position: relative;
+        max-width: 400px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+    
+    .close-btn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        font-size: 24px;
+        cursor: pointer;
+        color: #888;
+    }
+    
+    .close-btn:hover {
+        color: #333;
+    }
+    
+    .success-popup i {
+        font-size: 60px;
+        color: #28a745;
+        margin-bottom: 15px;
+    }
+    
+    .success-popup h3 {
+        margin-bottom: 10px;
+        color: #333;
+    }
+    
+    .success-popup p {
+        color: #666;
+    }
+    </style>
 </body>
 </html>

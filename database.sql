@@ -11,6 +11,8 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+
+
 CREATE TABLE guides (
     guide_id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -93,6 +95,17 @@ CREATE TABLE hotel_bookings (
     FOREIGN KEY (user_id) REFERENCES users(id),
     FOREIGN KEY (hotel_id) REFERENCES hotels(hotel_id)
 );
+
+CREATE TABLE feedback (
+    feedback_id INT AUTO_INCREMENT PRIMARY KEY,
+    tourist_id INT NOT NULL,
+    booking_id INT NOT NULL,
+    comment TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (tourist_id) REFERENCES users(id),
+    FOREIGN KEY (booking_id) REFERENCES hotel_bookings(booking_id)
+);
+
 ALTER TABLE guides ADD COLUMN availability BOOLEAN DEFAULT true;
 
 -- Insert dummy data
@@ -113,3 +126,15 @@ INSERT INTO hotels (name, district, star_rating, description, imageUrl, contact_
 ('Galle Fort Hotel', 'Galle', 5, 'Historic colonial hotel inside Galle Fort', 'images/hotels/hotel2.jpg', '+94912345678', 'info@galleforthotel.com', 25000.00, 15),
 ('Sigiriya Retreat', 'Sigiriya', 4, 'Modern hotel with views of Sigiriya Rock', 'images/hotels/hotel3.jpg', '+94662345678', 'info@sigiriyaretreat.com', 18000.00, 25),
 ('Ella View Resort', 'Ella', 3, 'Cozy mountain resort with scenic valley views', 'images/hotels/hotel4.jpg', '+94572345678', 'info@ellaview.com', 12000.00, 30);
+
+-- Insert default admin user
+INSERT INTO admins (name, email, password) VALUES 
+('Administrator', 'admin@admin.com', '123');
+
+CREATE TABLE admins (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);

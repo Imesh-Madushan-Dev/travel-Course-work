@@ -148,33 +148,16 @@ if ($result->num_rows > 0):
                                 </div>
                             </td>
                             <td>
-                                <div class="btn-group">
-                                    <?php if ($can_modify): ?>
+                                <div class="d-flex justify-content-center">
+                                    <?php if ($status === "Upcoming"): ?>
                                         <button type="button" 
-                                                class="btn btn-sm btn-outline-primary action-btn"
-                                                onclick="modifyBooking(<?php echo $booking['booking_id']; ?>, 'hotel')"
-                                                data-bs-toggle="tooltip"
-                                                title="Modify Booking"
-                                                style="padding: 0.25rem 0.5rem;">
-                                            <i class="fas fa-edit" style="font-size: 0.875rem;"></i>
-                                        </button>
-                                        <button type="button" 
-                                                class="btn btn-sm btn-outline-danger action-btn"
+                                                class="btn btn-link text-danger p-0"
                                                 onclick="confirmDelete(<?php echo $booking['booking_id']; ?>, 'hotel')"
                                                 data-bs-toggle="tooltip"
-                                                title="Cancel Booking"
-                                                style="padding: 0.25rem 0.5rem;">
-                                            <i class="fas fa-times" style="font-size: 0.875rem;"></i>
+                                                title="Cancel Booking">
+                                            <i class="fas fa-trash-alt" style="font-size: 20px; color: red;"></i>
                                         </button>
                                     <?php endif; ?>
-                                    <button type="button" 
-                                            class="btn btn-sm btn-outline-info action-btn"
-                                            onclick="window.location.href='booking-details.php?type=hotel&id=<?php echo $booking['booking_id']; ?>'"
-                                            data-bs-toggle="tooltip"
-                                            title="View Details"
-                                            style="padding: 0.25rem 0.5rem;">
-                                        <i class="fas fa-eye" style="font-size: 0.875rem;"></i>
-                                    </button>
                                 </div>
                             </td>
                         </tr>

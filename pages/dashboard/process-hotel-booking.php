@@ -14,7 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $check_out_date = $_POST['check_out_date'];
     $room_count = $_POST['room_count'];
     $guest_count = $_POST['guest_count'];
-    $special_requests = isset($_POST['special_requests']) ? $_POST['special_requests'] : '';
     
     // Validate dates
     $check_in_datetime = new DateTime($check_in_date);
@@ -58,12 +57,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // Start transaction
         $conn->begin_transaction();
         
-        // Insert booking
+        // Insert booking - removed special_requests from the query
         $stmt = $conn->prepare("INSERT INTO hotel_bookings (user_id, hotel_id, check_in_date, check_out_date, 
-                               room_count, guest_count, special_requests, total_cost, booking_status) 
-                               VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'pending')");
-        $stmt->bind_param("iissiisd", $user_id, $hotel_id, $check_in_date, $check_out_date, 
-                         $room_count, $guest_count, $special_requests, $total_cost);
+                               room_count, guest_count, total_cost, booking_status) 
+                               VALUES (?, ?, ?, ?, ?, ?, ?, 'pending')");
+        $stmt->bind_param("iissiid", $user_id, $hotel_id, $check_in_date, $check_out_date, 
+                         $room_count, $guest_count, $total_cost);
         $stmt->execute();
         
         if ($stmt->affected_rows > 0) {
@@ -76,7 +75,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $conn->commit();
                 $_SESSION['booking_success'] = true;
                 $_SESSION['booking_message'] = "Hotel booking has been submitted successfully and is pending confirmation.";
-                header("Location: booking-history.php?tab=hotels&success=1");
+                
+                // Show success message before redirecting
+                echo "<script>
+                    alert('Hotel booking successful! Your booking is pending confirmation.');
+                    window.location.href = 'booking-history.php?tab=hotels&success=1';
+                </script>";
                 exit();
             } else {
                 throw new Exception("Failed to update room availability");
@@ -94,4 +98,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     header("Location: book-hotel.php");
     exit();
 }
-?> 
+?>

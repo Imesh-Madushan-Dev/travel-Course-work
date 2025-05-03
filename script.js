@@ -90,21 +90,6 @@ searchButton.addEventListener("click", () => {
   }
 });
 
-// Newsletter Form Submission
-const newsletterForm = document.querySelector(".newsletter-form");
-if (newsletterForm) {
-  newsletterForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const email = newsletterForm.querySelector('input[type="email"]').value;
-    if (email) {
-      // Here you would typically handle the newsletter subscription
-      // For now, we'll just show an alert
-      alert("Thank you for subscribing to our newsletter!");
-      newsletterForm.reset();
-    }
-  });
-}
-
 // Testimonial slider
 const sliderTrack = document.querySelector(".testimonial-track");
 const prevBtn = document.querySelector(".slider-nav .prev");

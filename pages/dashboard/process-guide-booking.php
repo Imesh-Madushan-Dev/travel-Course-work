@@ -3,7 +3,7 @@ session_start();
 require_once '../../config/db_connect.php';
 
 if (!isset($_SESSION['user_id']) || !isset($_POST['guide_id'])) {
-    header("Location: hire-guide.php");
+    header("Location: book-guide-form.php?guide_id=" . $guide_id . "&booking=success");
     exit();
 }
 
@@ -48,7 +48,12 @@ try {
     $stmt->bind_param("iisiii", $user_id, $guide_id, $tour_date, $duration_days, $group_size, $total_cost);
 
     if ($stmt->execute()) {
-        header("Location: dashboard.php");
+        // Show success message before redirecting
+        echo "<script>
+            alert('Guide booking successful!');
+            window.location.href = 'dashboard.php';
+        </script>";
+        exit();
     } else {
         header("Location: booking-failed.php?error=booking_failed");
     }
