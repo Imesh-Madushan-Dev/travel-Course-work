@@ -50,9 +50,34 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header("Location: booking-failed.php?error=insufficient_rooms");
         exit();
     }
+      $total_cost = $hotel['price_per_night'] * $nights * $room_count;
     
-    $total_cost = $hotel['price_per_night'] * $nights * $room_count;
+    // Store the booking details in session for payment processing
+    $stmt = $conn->prepare("SELECT name FROM hotels WHERE hotel_id = ?");
+    $stmt->bind_param("i", $hotel_id);
+    $stmt->execute();
+    $hotel_result = $stmt->get_result();
+    $hotel_name = $hotel_result->fetch_assoc()['name'];
     
+    $_SESSION['booking_details'] = [
+        'type' => 'hotel',
+        'hotel_id' => $hotel_id,
+        'hotel_name' => $hotel_name,
+        'user_id' => $user_id,
+        'check_in_date' => $check_in_date,
+        'check_out_date' => $check_out_date,
+        'room_count' => $room_count,
+        'guest_count' => $guest_count,
+        'total_cost' => $total_cost,
+        'nights' => $nights
+    ];
+    
+    // Redirect to payment gateway
+    header("Location: payment-gateway.php");
+    exit();
+    
+    // Original transaction code moved to after payment
+    /*
     try {
         // Start transaction
         $conn->begin_transaction();
@@ -88,12 +113,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         } else {
             throw new Exception("Booking insertion failed");
         }
-    } catch (Exception $e) {
+    */
+    /* catch (Exception $e) {
         $conn->rollback();
         error_log("Hotel Booking Error: " . $e->getMessage());
         header("Location: booking-failed.php?error=booking_failed");
         exit();
-    }
+    } */
 } else {
     header("Location: book-hotel.php");
     exit();

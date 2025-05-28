@@ -17,8 +17,8 @@ try {
     $daily_rate = (float)$_POST['daily_rate'];
     $total_cost = $daily_rate * $duration_days;
 
-    // First verify if guide exists
-    $check_guide = "SELECT guide_id FROM guides WHERE guide_id = ?";
+    // First verify if guide exists and get guide name
+    $check_guide = "SELECT guide_id, name FROM guides WHERE guide_id = ?";
     $stmt = $conn->prepare($check_guide);
     $stmt->bind_param("i", $guide_id);
     $stmt->execute();
@@ -28,6 +28,8 @@ try {
         header("Location: booking-failed.php?error=guide_not_found");
         exit();
     }
+    
+    $guide_data = $guide_result->fetch_assoc();
 
     // Verify if user exists
     $check_user = "SELECT id FROM users WHERE id = ?";
@@ -41,6 +43,24 @@ try {
         exit();
     }
 
+    // Store the booking details in session for payment processing
+    $_SESSION['booking_details'] = [
+        'type' => 'guide',
+        'guide_id' => $guide_id,
+        'guide_name' => $guide_data['name'],
+        'user_id' => $user_id,
+        'tour_date' => $tour_date,
+        'duration_days' => $duration_days,
+        'group_size' => $group_size,
+        'total_cost' => $total_cost
+    ];
+    
+    // Redirect to payment gateway
+    header("Location: payment-gateway.php");
+    exit();
+    
+    // Original transaction code moved to process-booking-payment.php
+    /*
     // Insert booking
     $sql = "INSERT INTO guide_bookings (user_id, guide_id, tour_date, duration_days, group_size, total_cost) 
             VALUES (?, ?, ?, ?, ?, ?)";
@@ -57,6 +77,7 @@ try {
     } else {
         header("Location: booking-failed.php?error=booking_failed");
     }
+    */
 } catch (Exception $e) {
     header("Location: booking-failed.php?error=system_error");
 }

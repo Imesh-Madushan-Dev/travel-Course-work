@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $days = $interval->days + 1;
     
     // Get vehicle details and check availability
-    $stmt = $conn->prepare("SELECT daily_rate FROM vehicles WHERE vehicle_id = ? AND ac_available = 1");
+    $stmt = $conn->prepare("SELECT daily_rate, model FROM vehicles WHERE vehicle_id = ? AND ac_available = 1");
     $stmt->bind_param("i", $vehicle_id);
     $stmt->execute();
     $result = $stmt->get_result();
@@ -62,6 +62,25 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
     }
     
+    // Store the booking details in session for payment processing
+    $_SESSION['booking_details'] = [
+        'type' => 'vehicle',
+        'vehicle_id' => $vehicle_id,
+        'vehicle_model' => $vehicle['model'],
+        'user_id' => $user_id,
+        'pickup_date' => $pickup_date,
+        'return_date' => $return_date,
+        'pickup_location' => $pickup_location,
+        'total_cost' => $total_cost,
+        'days' => $days
+    ];
+    
+    // Redirect to payment gateway
+    header("Location: payment-gateway.php");
+    exit();
+    
+    // Original transaction code moved to process-booking-payment.php
+    /*
     try {
         // Start transaction
         $conn->begin_transaction();
@@ -88,6 +107,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         header("Location: booking-failed.php?error=booking_failed");
         exit();
     }
+    */
 } else {
     header("Location: book-vehicle.php");
     exit();

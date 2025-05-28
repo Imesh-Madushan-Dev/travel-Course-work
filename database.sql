@@ -127,9 +127,7 @@ INSERT INTO hotels (name, district, star_rating, description, imageUrl, contact_
 ('Sigiriya Retreat', 'Sigiriya', 4, 'Modern hotel with views of Sigiriya Rock', 'images/hotels/hotel3.jpg', '+94662345678', 'info@sigiriyaretreat.com', 18000.00, 25),
 ('Ella View Resort', 'Ella', 3, 'Cozy mountain resort with scenic valley views', 'images/hotels/hotel4.jpg', '+94572345678', 'info@ellaview.com', 12000.00, 30);
 
--- Insert default admin user
-INSERT INTO admins (name, email, password) VALUES 
-('Administrator', 'admin@admin.com', '123');
+
 
 CREATE TABLE admins (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -138,3 +136,7 @@ CREATE TABLE admins (
     password VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Insert default admin user
+INSERT INTO admins (name, email, password) VALUES 
+('Administrator', 'admin@admin.com', 'admin');

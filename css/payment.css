@@ -1,0 +1,137 @@
+.payment-icons {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin: 1.5rem 0;
+    padding: 1rem 0;
+}
+
+.payment-icon {
+    height: 36px;
+    width: 60px;
+    border-radius: 6px;
+    padding: 0;
+    background-color: #fff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+    transition: all 0.2s ease;
+}
+
+.payment-icon:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* CSS for payment icons placeholders */
+.payment-icon-placeholder {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 28px;
+    width: 46px;
+    background-color: #f8f9fa;
+    border: 1px solid #e0e0e0;
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+}
+
+.visa-placeholder {
+    background: linear-gradient(135deg, #0157a2 0%, #1565C0 100%);
+}
+
+.visa-placeholder::after {
+    content: 'VISA';
+    position: absolute;
+    color: white;
+    font-weight: 500;
+    font-size: 11px;
+    letter-spacing: 0.5px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.mastercard-placeholder {
+    background: white;
+    position: relative;
+}
+
+.mastercard-placeholder::before {
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: #EB001B;
+    border-radius: 50%;
+    left: 33%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.9;
+}
+
+.mastercard-placeholder::after {
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background-color: #F79E1B;
+    border-radius: 50%;
+    left: 67%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0.9;
+}
+
+.amex-placeholder {
+    background: #1F72CD;
+}
+
+.amex-placeholder::after {
+    content: 'AMEX';
+    position: absolute;
+    color: white;
+    font-weight: 500;
+    font-size: 9px;
+    letter-spacing: 0.5px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.paypal-placeholder {
+    background: #003087;
+}
+
+.paypal-placeholder::after {
+    content: 'PayPal';
+    position: absolute;
+    color: white;
+    font-weight: 500;
+    font-size: 10px;
+}
+
+/* Form icons styling */
+.form-label i,
+.card-header i,
+.section-title i,
+.secure-payment-notice i {
+    font-size: 12px;
+    width: 14px;
+    text-align: center;
+    color: #6c757d;
+}
+
+/* Input group icons */
+.input-group-text i {
+    font-size: 12px;
+    width: 14px;
+    text-align: center;
+}
+
+/* Button icons */
+.btn i {
+    font-size: 12px;
+    width: 14px;
+    text-align: center;
+}
+

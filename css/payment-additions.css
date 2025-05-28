@@ -1,0 +1,72 @@
+/* Additional styling for payment form UI consistency */
+.payment-form-container {
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+/* Card icons standardized size */
+.payment-card-icon {
+    width: 24px;
+    height: 20px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+}
+
+/* Standardize form spacing */
+.form-group {
+    margin-bottom: 0.75rem;
+}
+
+/* Standardize input heights */
+.form-control-sm,
+.input-group-sm>.form-control,
+.input-group-sm>.input-group-text {
+    height: 32px;
+    font-size: 0.85rem;
+    line-height: 1;
+}
+
+/* Make section titles more consistent */
+.section-divider {
+    margin: 1rem 0;
+    border-top: 1px solid #eee;
+    position: relative;
+}
+
+/* Consistent icon sizes */
+.payment-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+}
+
+/* Specific styles for the credit card form */
+.credit-card-form label {
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+    color: #555;
+}
+
+/* Consistent padding for form sections */
+.card-details,
+.payment-options,
+.booking-summary {
+    padding: 0.75rem;
+}
+
+/* Form component fixes */
+.form-check-input {
+    width: 0.9rem;
+    height: 0.9rem;
+    margin-top: 0.25rem;
+}
+
+.form-check-label.small {
+    font-size: 0.8rem;
+    color: #555;
+}
