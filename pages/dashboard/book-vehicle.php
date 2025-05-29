@@ -1,10 +1,11 @@
 <?php
-session_start();
+require_once 'includes/session_helper.php';
 if (!isset($_SESSION['user_id'])) {
     header("Location: ../login.php");
     exit();
 }
 require_once '../../config/db_connect.php';
+require_once 'includes/booking_helper.php';
 $page_title = "Book Vehicle";
 include 'includes/header.php';
 ?>
@@ -64,6 +65,11 @@ include 'includes/header.php';
                 $result = $stmt->get_result();
                 
                 while($vehicle = $result->fetch_assoc()): 
+                    $isBookedByUser = isVehicleBookedByUser($conn, $vehicle['vehicle_id'], $_SESSION['user_id']);
+                    $userBookingDetails = null;
+                    if ($isBookedByUser) {
+                        $userBookingDetails = getVehicleBookingDetails($conn, $vehicle['vehicle_id'], $_SESSION['user_id']);
+                    }
                 ?>
                 <div class="card vehicle-card" 
                      data-district="<?php echo htmlspecialchars($vehicle['district']); ?>"
@@ -87,13 +93,28 @@ include 'includes/header.php';
                                 <br><strong>AC:</strong> Available
                             <?php endif; ?>
                         </p>
-                        <?php if($vehicle['is_available']): ?>
+                        
+                        <?php if ($isBookedByUser): ?>
+                            <div class="alert alert-info mb-3">
+                                <i class="fas fa-car me-2"></i>
+                                <strong>You have booked this vehicle!</strong><br>
+                                <small>
+                                    Pickup: <?php echo date('M d, Y', strtotime($userBookingDetails['pickup_date'])); ?><br>
+                                    Return: <?php echo date('M d, Y', strtotime($userBookingDetails['return_date'])); ?><br>
+                                    Location: <?php echo htmlspecialchars($userBookingDetails['pickup_location']); ?><br>
+                                    Status: <?php echo ucfirst($userBookingDetails['booking_status']); ?>
+                                </small>
+                            </div>
+                            <button class="btn btn-success" disabled>
+                                <i class="fas fa-check-circle me-2"></i>Already Booked by You
+                            </button>
+                        <?php elseif($vehicle['is_available']): ?>
                             <button class="btn btn-primary" onclick="bookVehicle(<?php echo $vehicle['vehicle_id']; ?>)">
-                                Book Vehicle
+                                <i class="fas fa-car me-2"></i>Book Vehicle
                             </button>
                         <?php else: ?>
                             <button class="btn btn-secondary" disabled>
-                                Currently Unavailable
+                                <i class="fas fa-times-circle me-2"></i>Currently Unavailable
                             </button>
                         <?php endif; ?>
                     </div>
@@ -102,6 +123,93 @@ include 'includes/header.php';
             </div>
         </div>
     </div>
+    
+    <style>
+        .vehicles-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem 0;
+        }
+        
+        .vehicle-card {
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            overflow: hidden;
+            transition: all 0.3s ease;
+            margin-bottom: 1.5rem;
+            height: 100%;
+        }
+        
+        .vehicle-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+        }
+        
+        .vehicle-card .card-img-top {
+            height: 200px;
+            object-fit: cover;
+            width: 100%;
+        }
+        
+        .vehicle-card .card-body {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            height: calc(100% - 200px);
+        }
+        
+        .vehicle-card .card-title {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 1rem;
+        }
+        
+        .vehicle-card .card-text {
+            flex-grow: 1;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .alert-info {
+            background-color: #e7f3ff;
+            border-color: #0d6efd;
+            color: #0a58ca;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            border: 1px solid #0d6efd;
+        }
+        
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .btn-success:disabled {
+            background-color: #198754;
+            border-color: #198754;
+        }
+        
+        .filter-section {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .form-select {
+            border-radius: 8px;
+            border: 1px solid #dee2e6;
+            padding: 0.75rem 1rem;
+        }
+        
+        .form-select:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+    </style>
+    
     <script>
         const PLACEHOLDER_IMAGE = 'https://via.placeholder.com/300x200?text=No+Image';
 
